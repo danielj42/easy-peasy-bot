@@ -8,6 +8,9 @@
  * With custom integrations, we don't have a way to find out who installed us, so we can't message them :(
  */
 
+var request = require('request');
+var iconv  = require('iconv-lite');
+
 function onInstallation(bot, installer) {
     if (installer) {
         bot.startPrivateConversation({user: installer}, function (err, convo) {
@@ -89,6 +92,96 @@ controller.hears('hello', 'direct_message', function (bot, message) {
     bot.reply(message, 'Hello!');
 });
 
+controller.hears(
+    ['hello', 'hi', 'greetings'],
+    ['direct_mention', 'mention', 'direct_message'],
+    function(bot,message) {
+        bot.reply(message,'Hello!');
+    }
+);
+
+function reverseString(str) {
+    var newString = "";
+    for (var i = str.length - 1; i >= 0; i--) {
+        newString += str[i];
+    }
+    return newString;
+}
+
+controller.hears(
+    ['!lyncon'],
+    ['ambient'],
+    function(bot,message) {
+      request({uri: 'https://lyncon.se/dagens/lindholmen/', encoding: null} , function (err, response, body) {
+                  console.log('error: ', err); // Handle the error if one occurred
+                  console.log('statusCode: ', response && response.statusCode); // Check 200 or such
+
+                  body = iconv.decode(body, 'iso-8859-1');
+
+                  while(body.includes("</a></div>")) {
+                    // ADD RESTAURANT HEADER
+                    var pos1 = body.indexOf("</a></div>");
+                    var restaurantHeader = body.slice(0, pos1);
+                    body = body.slice(pos1 + 10, body.length - 1);
+                    restaurantHeader = reverseString(restaurantHeader);
+                    var pos2 = restaurantHeader.indexOf('>"');
+                    restaurantHeader = restaurantHeader.slice(0, pos2);
+                    restaurantHeader = reverseString(restaurantHeader);
+
+                    // GET DISHES FOR RESTAURANT
+                    var cutOff = body.indexOf("</a></div>");
+                    var bodySection;
+                    if (cutOff != null) {
+                      bodySection = body.slice(0, cutOff);
+                    } else {
+                      bodySection = body;
+                    }
+
+                    // ITERATE THROUGH DISHES
+                    while(bodySection.includes('<div class="d0">')) {
+                      var mPos1 = bodySection.indexOf('<div class="d0">') + 16;
+                      var mPos2 = bodySection.indexOf('</div>');
+                      var menuItem = bodySection.slice(mPos1, mPos2);
+                      menuItem = menuItem.replace("<strong>", "");
+                      menuItem = menuItem.replace("</strong>", "");
+                      var allMenuItems;
+                      if (allMenuItems != null) {
+                        allMenuItems = allMenuItems + "\n" + menuItem;
+                      } else {
+                        allMenuItems = menuItem + "\n";
+                      }
+                      bodySection = bodySection.slice(mPos2, bodySection.length - 1);
+                    }
+
+                    // ADD RESTAURANT AND ITS DISHES TO COMPLETE RESTAURANT LIST
+                    var addedBody;
+                    if (addedBody != null) {
+                      addedBody = addedBody + "\n*" + restaurantHeader + "*\n" + allMenuItems;
+                    } else {
+                      addedBody = "\n*" + restaurantHeader + "*\n" + allMenuItems
+                    }
+                    allMenuItems = "";
+                  }
+
+                  var today = new Date();
+                  var dd = today.getDate();
+                  var mm = today.getMonth() + 1; //January is 0!
+                  var yyyy = today.getFullYear();
+                  if (dd < 10) {
+                    dd = '0' + dd;
+                  }
+                  if (mm < 10) {
+                    mm = '0' + mm;
+                  }
+                  today = mm + '/' + dd + '/' + yyyy;
+                  var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+                  console.log(addedBody);
+                  bot.reply(message, 'This is the menu for ' + days[new Date().getDay()] + ' ' + today + ': ' + addedBody);
+              });
+
+    }
+  );
 
 /**
  * AN example of what could be:

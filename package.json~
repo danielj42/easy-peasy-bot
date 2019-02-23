@@ -1,7 +1,7 @@
 {
-  "name": "marvin",
+  "name": "easy-peasy-bot",
   "version": "1.0.0",
-  "description": "Lindholmen lunch bot",
+  "description": "The awesomest bot evar.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -27,8 +27,6 @@
   "dependencies": {
     "botkit": "0.2.2",
     "botkit-storage-mongo": "^1.0.2",
-    "iconv-lite": "^0.4.24",
-    "mongodb": "^1.4.39",
-    "request": "^2.88.0"
+    "mongodb": "^1.4.39"
   }
 }
