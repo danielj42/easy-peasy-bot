@@ -188,7 +188,7 @@ controller.hears(
   // FOR KEEPING SLACK APP ALIVE VIA UPTIME ROBOT
   expressApp.get('/', (req, res) => res.send('Hello World!'))
 
-  expressApp.listen(3000, function () {
+  expressApp.listen(4200, function () {
     console.log('The service is running!');
   });
 
