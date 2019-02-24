@@ -19,8 +19,8 @@ function onInstallation(bot, installer) {
             if (err) {
                 console.log(err);
             } else {
-                convo.say('I am a bot that has just joined your team');
-                convo.say('You must now /invite me to a channel so that I can be of use!');
+                convo.say('I am a bot that has just joined your team. I am at a rough estimate thirty billion times more intelligent than you.');
+                convo.say('You must now /invite me to a channel so that I can be of use.');
             }
         });
     }
@@ -87,18 +87,18 @@ controller.on('rtm_close', function (bot) {
 // BEGIN EDITING HERE!
 
 controller.on('bot_channel_join', function (bot, message) {
-    bot.reply(message, "I'm here!")
+    bot.reply(message, "I think you ought to know I’m feeling very depressed.")
 });
 
 controller.hears('hello', 'direct_message', function (bot, message) {
-    bot.reply(message, 'Hello!');
+    bot.reply(message, 'The first ten million years were the worst. And the second ten million: they were the worst, too. The third ten million I didn’t enjoy at all. After that, I went into a bit of a decline.');
 });
 
 controller.hears(
     ['hello', 'hi', 'greetings'],
     ['direct_mention', 'mention', 'direct_message'],
     function(bot,message) {
-        bot.reply(message,'Hello!');
+        bot.reply(message,'Don’t pretend you want to talk to me, I know you hate me.');
     }
 );
 
@@ -179,7 +179,7 @@ controller.hears(
                   var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
                   console.log(addedBody);
-                  bot.reply(message, 'This is the menu for ' + days[new Date().getDay()] + ' ' + today + ': ' + addedBody);
+                  bot.reply(message, 'This is the sort of thing you lifeforms enjoy, is it? The menu for ' + days[new Date().getDay()] + ' ' + today + ': ' + addedBody);
               });
 
     }
