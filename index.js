@@ -11,7 +11,7 @@
 const express = require('express');
 var request = require('request');
 var iconv  = require('iconv-lite');
-const app = express();
+const expressApp = express();
 
 function onInstallation(bot, installer) {
     if (installer) {
@@ -186,9 +186,9 @@ controller.hears(
   );
 
   // FOR KEEPING SLACK APP ALIVE VIA UPTIME ROBOT
-  app.get('/', (req, res) => res.send('Hello World!'))
+  expressApp.get('/', (req, res) => res.send('Hello World!'))
 
-  app.listen(3000, function () {
+  expressApp.listen(3000, function () {
     console.log('The service is running!');
   });
 
