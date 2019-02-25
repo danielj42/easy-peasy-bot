@@ -141,11 +141,13 @@ controller.hears(
 
                     // ITERATE THROUGH DISHES
                     while(bodySection.includes('<div class="d0">')) {
-                      var mPos1 = bodySection.indexOf('<div class="d0">') + 16;
+                      var mPos1 = bodySection.indexOf('<div class="d') + 16;
                       var mPos2 = bodySection.indexOf('</div>');
                       var menuItem = bodySection.slice(mPos1, mPos2);
-                      menuItem = menuItem.replace("<strong>", "");
-                      menuItem = menuItem.replace("</strong>", "");
+                      menuItem = menuItem.replace("<strong>", "*");
+                      menuItem = menuItem.replace("</strong>", "*");
+                      menuItem = menuItem.replace("<i>", "_");
+                      menuItem = menuItem.replace("</i>", "_");
                       var allMenuItems;
                       if (allMenuItems != null) {
                         allMenuItems = allMenuItems + "\n" + menuItem;
