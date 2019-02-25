@@ -30,6 +30,7 @@
     "express": "^4.16.4",
     "iconv-lite": "^0.4.24",
     "mongodb": "^1.4.39",
+    "on-finished": "^2.3.0",
     "request": "^2.88.0"
   }
 }
