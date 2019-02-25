@@ -119,7 +119,8 @@ controller.hears(
                   console.log('statusCode: ', response && response.statusCode); // Check 200 or such
 
                   body = iconv.decode(body, 'iso-8859-1');
-
+                  var addedBody = "";
+                  var allMenuItems = "";
                   while(body.includes("</a></div>")) {
                     // ADD RESTAURANT HEADER
                     var pos1 = body.indexOf("</a></div>");
@@ -148,22 +149,12 @@ controller.hears(
                       menuItem = menuItem.replace("</strong>", "*");
                       menuItem = menuItem.replace("<i>", "_");
                       menuItem = menuItem.replace("</i>", "_");
-                      var allMenuItems;
-                      if (allMenuItems != null) {
-                        allMenuItems = allMenuItems + "\n" + menuItem;
-                      } else {
-                        allMenuItems = menuItem + "\n";
-                      }
+                      allMenuItems = allMenuItems + "\n" + menuItem;
                       bodySection = bodySection.slice(mPos2, bodySection.length - 1);
                     }
 
                     // ADD RESTAURANT AND ITS DISHES TO COMPLETE RESTAURANT LIST
-                    var addedBody;
-                    if (addedBody != null) {
-                      addedBody = addedBody + "\n*" + restaurantHeader + "*\n" + allMenuItems;
-                    } else {
-                      addedBody = "\n*" + restaurantHeader + "*\n" + allMenuItems
-                    }
+                    addedBody = addedBody + "\n*" + restaurantHeader + "*\n" + allMenuItems;
                     allMenuItems = "";
                   }
 
