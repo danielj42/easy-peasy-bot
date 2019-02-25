@@ -132,16 +132,17 @@ controller.hears(
                     restaurantHeader = reverseString(restaurantHeader);
 
                     // GET DISHES FOR RESTAURANT
-                    var cutOff = body.indexOf("</a></div>");
+                    var cutOff = body.indexOf('class="ruta"') + 13;
                     var bodySection;
                     if (cutOff != null) {
                       bodySection = body.slice(0, cutOff);
                     } else {
-                      bodySection = body;
+                      bodySection = body.slice(cutOff, body.length - 1);
                     }
+                    cutOff = null;
 
                     // ITERATE THROUGH DISHES
-                    while(bodySection.includes('<div class="d0">')) {
+                    while(bodySection.includes('<div class="d')) {
                       var mPos1 = bodySection.indexOf('<div class="d') + 16;
                       var mPos2 = bodySection.indexOf('</div>');
                       var menuItem = bodySection.slice(mPos1, mPos2);
@@ -150,11 +151,11 @@ controller.hears(
                       menuItem = menuItem.replace("<i>", "_");
                       menuItem = menuItem.replace("</i>", "_");
                       allMenuItems = allMenuItems + "\n" + menuItem;
-                      bodySection = bodySection.slice(mPos2, bodySection.length - 1);
+                      bodySection = bodySection.slice(mPos2 + 6, bodySection.length - 1);
                     }
 
                     // ADD RESTAURANT AND ITS DISHES TO COMPLETE RESTAURANT LIST
-                    addedBody = addedBody + "\n*" + restaurantHeader + "*\n" + allMenuItems;
+                    addedBody = addedBody + "\n\n`" + restaurantHeader + "`" + allMenuItems;
                     allMenuItems = "";
                   }
 
